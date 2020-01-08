@@ -4,7 +4,8 @@ Created on Tue Dec 17 17:27:08 2019
 
 @author: Robin
 """
-import Elevator
+from Elevator import Elevator
+from Passenger import Passenger
 
 class ElevatorManager:
     __elevatorList = []
@@ -18,16 +19,29 @@ class ElevatorManager:
     def getNumOfElevator(self):
         return len(self.__elevatorList)
     
-    def elevatorScheduler():
-        # emtpy method for now
+    def elevatorScheduler(self, newPassList):
+        if newPassList==[]:
+            return
+        # for now just add
+        self.__elevatorList[0].updatePassenger(newPassList)
+        self.__elevatorList[0].updateNextLocation(newPassList.start)
+        self.__elevatorList[0].updateNextLocation(newPassList.dest)
         print('scheduler')
         
-    def elevatorMover():
-        # emtpy method for now
+    def elevatorMover(self):
+        #move elevator for a step
+        for elevator in self.__elevatorList:
+            elevator.updateLocation()
         print('mover')
     
+    
+### testing codes ###
+manager = ElevatorManager(1)
+manager.elevatorMover()
 
-manager = ElevatorManager(3)
-print(manager.getNumOfElevator())
-manager.addElevator()
-print(manager.getNumOfElevator())
+passTest = Passenger(1, 1, 3)
+manager.elevatorScheduler(passTest)
+
+for i in range(3):
+    manager.elevatorMover()
+    
