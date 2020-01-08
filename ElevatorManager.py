@@ -9,6 +9,7 @@ from Passenger import Passenger
 
 class ElevatorManager:
     __elevatorList = []
+    __waitingPassenger = []
 
     def __init__(self, elvNum):
         self.__elevatorList = [Elevator() for i in range(elvNum)]
@@ -20,18 +21,24 @@ class ElevatorManager:
         return len(self.__elevatorList)
     
     def elevatorScheduler(self, newPassList):
+        # whenever event happens, distribute waiting passenger to elev. and re-schedule
+        
         if newPassList==[]:
             return
         # for now just add
         self.__elevatorList[0].updatePassenger(newPassList)
         self.__elevatorList[0].updateNextLocation(newPassList.start)
         self.__elevatorList[0].updateNextLocation(newPassList.dest)
+        
         print('scheduler')
         
     def elevatorMover(self):
         #move elevator for a step
         for elevator in self.__elevatorList:
             elevator.updateLocation()
+            
+        #elevator got to the target floor <- waiting passenger give & notify elev.
+        
         print('mover')
     
     
@@ -39,7 +46,7 @@ class ElevatorManager:
 manager = ElevatorManager(1)
 manager.elevatorMover()
 
-passTest = Passenger(1, 1, 3)
+passTest = Passenger(1, 2, 3)
 manager.elevatorScheduler(passTest)
 
 for i in range(3):

@@ -25,7 +25,13 @@ class Elevator():
     def __updateLocation(self):
         # update location of the elevator        
         self.__location += self.__direction        
-        self.updatePassenger([])
+        if self.__nextLocation!=[] and self.__location == self.__nextLocation[0]:
+            #check if someone has to get out
+            for passenger in self.__currPassList:
+                if passenger.dest == self.__location:
+                    print('get out '+str(passenger.ID))
+                    self.__currPassList.remove(passenger)
+            self.__nextLocation.pop(0)       
         
     def __updateDirection(self):
         # update direction of the elevator
@@ -38,24 +44,40 @@ class Elevator():
                 self.__direction=0
             else:
                 self.__direction=1 if nxtLoc>curLoc else -1    
+                
+    ## take only one target floor!
+    def updateNextLocation(self, newNextFloor):
+        # update next location list of the elevator
+        if self.__nextLocation==[]:
+            self.__nextLocation.append(newNextFloor)
+            return
+        if newNextFloor==self.__nextLocation:
+            print('Warning : Same current location and next floor!')
+            return
         
+        if self.__direction==0:
+            self.__nextLocation.append(newNextFloor)
+        elif self.__direction==1:
+            if self.__location < newNextFloor:
+                for i in range(len(self.__nextLocation)):
+                    if self.__nextLocation[i]>newNextFloor:
+                        self.__nextLocation.insert(i, newNextFloor)
+            else:
+                self.__nextLocation.append(newNextFloor)
+        else:
+            if self.__location > newNextFloor:
+                for i in range(len(self.__nextLocation)):
+                    if self.__nextLocation[i]<newNextFloor:
+                        self.__nextLocation.insert(i, newNextFloor)
+            else:
+                self.__nextLocation.append(newNextFloor)
+    
+    
     def updatePassenger(self, newPass):
-        # update passenger list (get in, get out ...)
+        # get passenger into the elevator
         if newPass!=[]:
             self.__currPassList.append(newPass)
-            
-        #check if someone has to get out
-        for passenger in self.__currPassList:
-            if passenger.dest == self.__location:
-                print('get out '+str(passenger.ID))
-                self.__currPassList.remove(passenger)
-                # printer.log
-        
-    def updateNextLocation(self, newNextJob):
-        # update next location list of the elevator
-        if newNextJob!=[]:
-            self.__nextLocation.append(newNextJob)
-        
+
     def updateLocation(self):
         # move for a step
         self.__updateDirection()
