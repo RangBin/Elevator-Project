@@ -13,7 +13,7 @@ class elvLog:
         self.elevLoc = elevLoc
         
 
-class printer:
+class Printer:
     
     lognum = 1;
     elvlogList = []
@@ -35,7 +35,7 @@ class printer:
         f.close()
 
 
-p = printer()
+p = Printer()
 p.elvlog_update(10, 1, 4)
 p.elvlog_update(13, 1, 6)
 p.elvlog_print()

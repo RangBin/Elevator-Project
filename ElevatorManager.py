@@ -9,7 +9,7 @@ from Passenger import Passenger
 
 class ElevatorManager:
     __elevatorList = []
-    __waitingPassenger = []
+    __waitingPassList = []
 
     def __init__(self, elvNum):
         self.__elevatorList = [Elevator() for i in range(elvNum)]
@@ -22,7 +22,6 @@ class ElevatorManager:
     
     def elevatorScheduler(self, newPassList):
         # whenever event happens, distribute waiting passenger to elev. and re-schedule
-        
         if newPassList==[]:
             return
         # for now just add
