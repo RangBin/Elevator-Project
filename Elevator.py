@@ -49,7 +49,7 @@ class Elevator():
                 self.__direction=1 if nxtLoc>curLoc else -1    
                 
     ## take only one target floor!
-    def updateNextLocation(self, newNextFloor):
+    def addNextLocation(self, newNextFloor):
         # update next location list of the elevator
         if self.__nextLocation==[]:
             self.__nextLocation.append(newNextFloor)
@@ -57,35 +57,59 @@ class Elevator():
         if newNextFloor==self.__nextLocation:
             print('Warning : Same current location and next floor!')
             return
+        if newNextFloor in self.__nextLocation:
+            # already in the list
+            return
         
         if self.__direction==0:
             self.__nextLocation.append(newNextFloor)
-        elif self.__direction==1:
-            if self.__location < newNextFloor:
-                for i in range(len(self.__nextLocation)):
-                    if self.__nextLocation[i]>newNextFloor:
-                        self.__nextLocation.insert(i, newNextFloor)
-            else:
+        elif (self.__direction==1 and self.__location < newNextFloor) or \
+        (self.__direction==-1 and self.__location > newNextFloor):
+            for i in range(len(self.__nextLocation)):
+                if (self.__direction==1 and self.__nextLocation[i]>newNextFloor) or \
+                (self.__direction==-1 and self.__nextLocation[i]<newNextFloor):
+                    self.__nextLocation.insert(i, newNextFloor)
+                    inserted = True
+                    break
+            if not inserted:
                 self.__nextLocation.append(newNextFloor)
         else:
-            if self.__location > newNextFloor:
-                for i in range(len(self.__nextLocation)):
-                    if self.__nextLocation[i]<newNextFloor:
-                        self.__nextLocation.insert(i, newNextFloor)
-            else:
-                self.__nextLocation.append(newNextFloor)
+            self.__nextLocation.append(newNextFloor)
+            
+            # same code ...
+#        elif self.__direction==1:
+#            if self.__location < newNextFloor:
+#                for i in range(len(self.__nextLocation)):
+#                    if self.__nextLocation[i]>newNextFloor:
+#                        self.__nextLocation.insert(i, newNextFloor)
+#                        inserted = True
+#                        break
+#                if not inserted:
+#                    self.__nextLocation.append(newNextFloor)
+#            else:
+#                self.__nextLocation.append(newNextFloor)
+#        else:
+#            if self.__location > newNextFloor:
+#                for i in range(len(self.__nextLocation)):
+#                    if self.__nextLocation[i]<newNextFloor:
+#                        self.__nextLocation.insert(i, newNextFloor)
+#                        inserted=True
+#                        break
+#                if not inserted:
+#                    self.__nextLocation.append(newNextFloor)
+#            else:
+#                self.__nextLocation.append(newNextFloor)
     
-    
-    def addPassenger(self, newPass):
-        # get passenger into the elevator
-        if newPass!=[]:
-            self.__currPassList.append(newPass)
+    def addPassenger(self, newPass: Passenger):
+        # a passenger get into elevator
+        self.__currPassList.append(newPass)
+        self.addNextLocation(newPass.dest)
 
     def move(self):
         # move for a step
         self.__updateDirection()
         return self.__updateLocation()
-        # print('ID('+str(self.__elevatorID)+') at '+str(self.__location))
+        # TODO: Printer method...
         
 
     ### some getters and setters.
