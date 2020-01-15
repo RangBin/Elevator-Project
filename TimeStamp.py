@@ -6,6 +6,8 @@ Created on Tue Dec 17 15:08:39 2019
 """
 import csv
 import numpy as np
+from Passenger import Passenger
+from ElevatorManager import ElevatorManager
 #import ElevatorManager
 
 
@@ -16,53 +18,54 @@ class TimeStamp:
     cache = []
     #EM : ElevatorManager
     
-    
     def __init__(self, time=20): #time: int=10000
         #super().__init__()
         self.duetime = time
         #self.EM = ElevatorManager()
         self.f = open('test_case1.csv','r',encoding = 'utf-8')
         self.rdr = csv.reader(self.f)
+        self.em = ElevatorManager(1)
         #inputStream init
-        # -> passList init
+        # -> passList init        
         
-        
-    #def inputStreamInit(self):
-        
-        
-    #여기서 passengerList init도 수행
-    
-    def __getEventList__(self, time):
-        eventList = []
+            
+    def __getPasstList__(self, time):
+        passList = []
         print('time = '+str(time)+'sec')
         if(len(self.cache) != 0):
             if(self.cache[0]==time):
-                eventList = [[int(x) for x in self.cache]]
+                tmp_pass = Passenger(0,0,0)
+                print(self.cache)
+                [tmpt, tmp_pass.ID, tmp_pass.start, tmp_pass.dest] = [int(x) for x in self.cache]
+                passList = [tmp_pass]
             else:
-                return eventList
+                return passList
                 
         for line in self.rdr:
             if int(line[0]) != time:
                 self.cache = [int(x) for x in line]
                 #print('cache = '+str(self.cache))
-                return eventList
+                return passList
             else:
-                np.append(eventList,[[int(x) for x in line]], axis=0)
+                tmp_pass = Passenger(0,0,0)
+                [tmp_pass.ID, tmp_pass.start, tmp_pass.dest] = [int(x) for x in line]
+                passList.append(tmp_pass)
                 
         
-        return eventList
+        return passList
     
-    def main(self):
-        eventList = []
-        
+    def main(self): 
         for i in range(0, self.duetime):
-            eventList = self.__getEventList__(i)
-            if len(eventList) == 0:
+            passList = self.__getPasstList__(i)
+            if len(passList) == 0:
                 continue
             else:
-                print('eventList =')
-                for i in range(0, len(eventList)):
-                    print(eventList[i])
+                #print('eventList =')
+                #for i in range(0, len(passList)):
+                #    print(str(passList[i].ID)+" "+str(passList[i].start)+" "+str(passList[i].dest))
+                self.em.elevatorScheduler(passList)
+            
+            self.em.elevatorMover()
             
             
             #inputStream check -> get eventList
@@ -72,6 +75,9 @@ class TimeStamp:
             #EM.elevaotrMover()
             
 
+
+ts = TimeStamp()
+ts.main()
 
 #pseudo
 #    def reroute(self, elvnum, dest):
