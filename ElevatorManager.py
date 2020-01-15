@@ -9,7 +9,7 @@ from Passenger import Passenger
 
 class ElevatorManager:
     __elevatorList = []
-    __waitingPassenger = []
+    __waitingPassList = []
 
     def __init__(self, elvNum):
         self.__elevatorList = [Elevator() for i in range(elvNum)]
@@ -22,7 +22,7 @@ class ElevatorManager:
     
     def elevatorScheduler(self, newPassList):
         # whenever event happens, distribute waiting passenger to elev. and re-schedule
-        
+        # TODO: not implemented yet
         if newPassList==[]:
             return
         # for now just add
@@ -37,22 +37,18 @@ class ElevatorManager:
         for elevator in self.__elevatorList:
             isReached = elevator.move()
             if isReached:
-                # the elevator is reached target floor
-                # Manager should check if there is any waiting passenger
-                #  (waiting passenger give & notify elev.)
-                print('TODO: passenger waiting check, put into elevator')
-                #elevator.addPassenger()
-            
-        print('mover')
-    
-    
-### testing codes ###
-manager = ElevatorManager(1)
-manager.elevatorMover()
-
-passTest = Passenger(1, 2, 3)
-manager.elevatorScheduler(passTest)
-
-for i in range(3):
-    manager.elevatorMover()
+                elvLocation = elevator.getLocation()
+                elvDir = elevator.getDirection()
+                
+                for waitingPass in self.__waitingPassList:
+                    if waitingPass.start!=elvLocation:
+                        continue
+                    if waitingPass.start < waitingPass.dest:
+                        passDir = 1
+                    else:
+                        passDir = -1
+                    if passDir==elvDir:
+                        # TODO: may handle max people elevator problem later..
+                        elevator.addPassenger(waitingPass)  
+        #print('mover')
     
