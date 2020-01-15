@@ -35,10 +35,14 @@ class ElevatorManager:
     def elevatorMover(self):
         #move elevator for a step
         for elevator in self.__elevatorList:
-            elevator.updateLocation()
+            isReached = elevator.move()
+            if isReached:
+                # the elevator is reached target floor
+                # Manager should check if there is any waiting passenger
+                #  (waiting passenger give & notify elev.)
+                print('TODO: passenger waiting check, put into elevator')
+                #elevator.addPassenger()
             
-        #elevator got to the target floor <- waiting passenger give & notify elev.
-        
         print('mover')
     
     

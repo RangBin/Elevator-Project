@@ -23,15 +23,18 @@ class Elevator():
         self.__direction = 0
        
     def __updateLocation(self):
-        # update location of the elevator        
+        # update location of the elevator
+        reached = False        
         self.__location += self.__direction        
         if self.__nextLocation!=[] and self.__location == self.__nextLocation[0]:
             #check if someone has to get out
+            reached = True
             for passenger in self.__currPassList:
                 if passenger.dest == self.__location:
                     print('get out '+str(passenger.ID))
                     self.__currPassList.remove(passenger)
-            self.__nextLocation.pop(0)       
+            self.__nextLocation.pop(0)   
+        return reached
         
     def __updateDirection(self):
         # update direction of the elevator
@@ -73,16 +76,17 @@ class Elevator():
                 self.__nextLocation.append(newNextFloor)
     
     
-    def updatePassenger(self, newPass):
+    def addPassenger(self, newPass):
         # get passenger into the elevator
         if newPass!=[]:
             self.__currPassList.append(newPass)
 
-    def updateLocation(self):
+    def move(self):
         # move for a step
         self.__updateDirection()
-        self.__updateLocation()
-        print('ID('+str(self.__elevatorID)+') at '+str(self.__location))
+        return self.__updateLocation()
+        # print('ID('+str(self.__elevatorID)+') at '+str(self.__location))
+        
 
     ### some getters and setters.
     def getID(self):
