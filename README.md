@@ -18,3 +18,4 @@ Also, we provide an event flow graph as follows:
 ![event flow graph](https://github.com/RangBin/Elevator-Project/blob/master/images/flow_graph_ver1.png) 
 
 
+This project is still in progress. (2019. Dec. 9 ~)
