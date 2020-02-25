@@ -15,4 +15,6 @@ As the diagram illustrates, there are 5 classes in this project.
 
 Also, we provide an event flow graph as follows:
 
-![event flow graph] (https://github.com/RangBin/Elevator-Project/blob/master/images/flow_graph_ver1.png) 
+![event flow graph](https://github.com/RangBin/Elevator-Project/blob/master/images/flow_graph_ver1.png) 
+
+
